@@ -21,10 +21,24 @@ To play the game:
 
 The object of the game is to direct your character to the river crossing a road lines one by one and avoiding enemies.
 
+* Select your character.
 * Navigate your character using keyboard arrow keys :arrow_left::arrow_up::arrow_right::arrow_down:.
 * Avoid enemies one the road. If they touch your character you have to start over.
 * Once your character reach the the river you won and character's position would reset.
+* To switch character during the game simply click "Select Charcter" button below the game canvas.
+* You can play music using embedded [bandcamp](https://bandcamp.com/) player.
+
+### :warning: Attention!
+
+Embedded player steals focus when one click on it, so you won't be able to navigate your character with keyboard keys after pressing play button. You have to click anywhere on the game canvas to get character controls working back again.
 
 ## Built with
 
 The Arcade Game is purely built in **JavaScript**, **HTML** and **CSS**.
+
+This project has also been built with the following libraries:
+* [sweetalert](https://github.com/t4t5/sweetalert): for modal windows.
+
+## ToDos
+
+Return focus back from iframe to parent.

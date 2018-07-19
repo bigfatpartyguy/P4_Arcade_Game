@@ -1,3 +1,5 @@
+'use strict';
+
 //Helper function for random speed
 function speedRnd(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -31,9 +33,7 @@ Enemy.prototype.update = function(dt) {
 
 // Handlilng collisions of the enemy and the player
     if ((this.x + 60) > player.x && this.x < (player.x + 60) && this.y === player.y) {
-        debugger;
-        player.x = 202;
-        player.y = 390;
+        player.reset();
     }
 };
 
@@ -65,8 +65,7 @@ Player.prototype.update = function() {
 
 // Winning case
         case this.y < 38:
-            this.y = 390;
-            this.x = 202;
+            this.reset();
             break;
     }
 };
@@ -74,6 +73,12 @@ Player.prototype.update = function() {
 // Borrow render method from Emeny's class
 Player.prototype.render = function() {
     Enemy.prototype.render.call(this);
+};
+
+//Simple method to reset player's position
+Player.prototype.reset = function() {
+    this.x = 202;
+    this.y = 390;
 };
 
 // Map Player movement to keyboard arrow buttons
@@ -94,17 +99,82 @@ Player.prototype.handleInput = function(keyCode) {
     }
 };
 
+// Simple constructor to create modal window using sweelalert framework.
+var SelectModal = function() {
+
+    // Private variable and function
+    var img = {
+        boy: 'images/char-boy.png',
+        cat: 'images/char-cat-girl.png',
+        horn: 'images/char-horn-girl.png',
+        pink: 'images/char-pink-girl.png',
+        princess: 'images/char-princess-girl.png'
+    };
+    // This function adds images to sweetalert buttons
+    function loadImg() {
+        for (let key in img) {
+            var btn = document.querySelector('.' + key);
+            btn.appendChild(Resources.get(img[key]));
+        }
+    }
+
+    this.selected = img['boy'];
+    // renderEntities function checks this flag to "pause" rendering
+    this.busy = false;
+    this.swalSelect = () => {
+        this.busy = true;
+        swal({
+            title: 'Select your character',
+            buttons: {
+                boy: {
+                    text: 'Char-Boy',
+                    value: 'boy',
+                    className: 'boy',
+                    dangerMode: true,
+                },
+                cat: {
+                    text: 'Cat-Girl',
+                    value: 'cat',
+                    className: 'cat',
+                },
+                horn: {
+                    text: 'Horn-Girl',
+                    value: 'horn',
+                    className: 'horn',
+                },
+                pink: {
+                    text: 'Pink-Girl',
+                    value: 'pink',
+                    className: 'pink',
+                },
+                princess: {
+                    text: 'Princess-Girl',
+                    value: 'princess',
+                    className: 'princess',
+                },
+            },
+        }).then((value) => {
+            if (value) {
+                this.selected = img[value];
+            }
+            this.busy = false;
+        });
+        document.querySelector('.swal-button').focus();
+        loadImg();
+    };
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
-    new Enemy(0, 58, speedRnd(100, 500)),
-    new Enemy(0, 58+83, speedRnd(100, 500)),
+    new Enemy(-101, 58, speedRnd(100, 500)),
+    new Enemy(-101, 58+83, speedRnd(100, 500)),
     new Enemy(-101, 58+83*2, speedRnd(100, 500))
 ];
-
+var selectModal = new SelectModal(); // Instantiate charcer selection modal window
 var player = new Player();
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {

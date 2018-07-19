@@ -1,3 +1,82 @@
 body {
     text-align: center;
+    font-family: Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Create grid layout */
+#grid-container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    width: 505px;
+}
+
+canvas {
+    grid-column: 1 / 3;
+}
+
+#player {
+    grid-column: 1 / 2;
+}
+
+/* Style "select character" button */
+.select-character {
+    grid-column: 2 / 3;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.65);
+    letter-spacing: 1px;
+    word-spacing: 3px;
+    height: 42px;
+    width: 90%;
+    margin-left: auto;
+    cursor: pointer;
+    border: 2px solid #5e78ee;
+    border-radius: 3px;
+    background: none;
+    transition: 0.25s;
+}
+
+.select-character:hover,
+.select-character:focus {
+    box-shadow: inset 0 0 12px 21px #5e78ee;
+    color: #fff;
+
+}
+
+/* Style modal  */
+.swal-overlay {
+    background-color: rgba(72, 100, 111, 0.95);
+}
+
+.swal-modal {
+    background-color: #fff;
+    width: max-content;
+}
+
+.swal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.swal-button {
+    padding: 10px 0;
+    width: 101px;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #6fc45d;
+    transition: 0.5s;
+}
+
+.swal-button:focus {
+    box-shadow: 0 0 5px 2px #777;
+}
+
+.swal-button:hover {
+    box-shadow: 0 0 5px 2px #777;
+}
+
+.swal-button:active {
+    background: none;
 }

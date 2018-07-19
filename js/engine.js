@@ -9,7 +9,7 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
+ * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
 
@@ -20,12 +20,14 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
+        container = win['grid-container'],
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        selectBtn = document.querySelector('.select-character');
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    container.insertBefore(canvas, container.children[0]);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -63,6 +65,7 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
+        selectModal.swalSelect();
         main();
     }
 
@@ -147,11 +150,19 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
-            enemy.render();
-        });
+        /* Render only if modal window is not opened.
+        Also check if character has been changed and update player.sprite. */
+        if (!selectModal.busy) {
+            if (player.sprite !== selectModal.selected) {
+                player.sprite = selectModal.selected;
+                player.reset();
+            }
+            allEnemies.forEach(function (enemy) {
+                enemy.render();
+            });
 
-        player.render();
+            player.render();
+        }
     }
 
     /* This function does nothing but it could have been a good place to
@@ -171,7 +182,11 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
@@ -180,4 +195,10 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    // Listen for button click to open modal.
+    selectBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectModal.swalSelect();
+    });
 })(this);
